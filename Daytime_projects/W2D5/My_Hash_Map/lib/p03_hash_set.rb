@@ -9,6 +9,8 @@ class HashSet
   def insert(key)
     return false if self.include(key)
     self[key.hash] << key
+    self.count += 1
+    resize! if num_buckets < self.count
     key
   end
 
@@ -19,6 +21,7 @@ class HashSet
   def remove(key)
     return nil if self.include?(key)
     self[key.hash].delete(key)
+    self.count -= 1
   end
 
   private
