@@ -7,6 +7,9 @@ class HashSet
   end
 
   def insert(key)
+    return false if self.include(key)
+    self[key.hash] << key
+    key
   end
 
   def include?(key)
@@ -14,6 +17,7 @@ class HashSet
   end
 
   def remove(key)
+    return nil if self.include?(key)
     self[key.hash].delete(key)
   end
 
@@ -28,5 +32,10 @@ class HashSet
   end
 
   def resize!
+    old_store = self.store
+    self.count = 0
+    self.store = Array.new(num_buckets * 2) { Array.new }
+
+    old_store.flatten.each { |key| insert(key) }
   end
 end
